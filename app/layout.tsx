@@ -4,9 +4,9 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Daniel Mangasarian',
   description: 'Engineer, researcher, developer.',
-  metadataBase: new URL('https://dannymango777.github.io/PersonalWebsite'),
+  metadataBase: new URL('https://danielmangasarian.com'),
   icons: {
-    icon: '/PersonalWebsite/favicon.svg',
+    icon: '/favicon.svg',
   },
 };
 
