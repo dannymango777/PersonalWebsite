@@ -2,7 +2,7 @@
   "name": "personal-website",
   "description": "Daniel Mangasarian's professional personal website",
   "version": "1.0.0",
-  "homepage": "https://danielmangasarian.com",
+  "homepage": "https://www.danielmangasarian.com",
   "private": true,
   "scripts": {
     "dev": "next dev",
