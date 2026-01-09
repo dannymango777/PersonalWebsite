@@ -8,10 +8,11 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				background: '#323a43',
-				card: '#ebe7dc',
-				primary: '#d4cfc0',
-				secondary: '#a89f94',
+				background: '#1e1e1e',
+				card: '#2a2a2a',
+				primary: '#ffffff',
+				secondary: '#a0a0a0',
+				border: '#3a3a3a',
 			},
 			fontFamily: {
 				serif: ['Georgia', 'Garamond', 'serif'],
