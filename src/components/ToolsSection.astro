@@ -1,0 +1,130 @@
+---
+import { toolsConfig } from "../config";
+
+if (!toolsConfig.enabled) {
+  return null;
+}
+
+const { heading, description, categories } = toolsConfig;
+---
+
+<section class="mt-12">
+  <button
+    id="tools-toggle"
+    class="flex items-center w-full text-left text-xl font-medium mb-2 text-[#d4c4a8] hover:text-[#e8dcc8] transition-colors"
+  >
+    <span class="mr-2 transition-transform duration-300" id="tools-arrow">▶</span>
+    {heading}
+  </button>
+  
+  <div id="tools-content" class="tools-section">
+    <p class="text-[#a89884] mb-6">{description}</p>
+    
+    <div class="space-y-4">
+      {categories.map((category, catIndex) => (
+        <div class="border border-[#2a3b52] rounded-lg p-4 bg-[#1e2938]">
+          <button
+            class="category-toggle flex items-center w-full text-left font-medium text-[#d4c4a8] hover:text-[#e8dcc8] transition-colors"
+            data-category={catIndex}
+          >
+            <span class="mr-2 transition-transform duration-300 category-arrow">▶</span>
+            {category.name}
+          </button>
+          {category.description && (
+            <p class="text-sm text-[#a89884] mt-1 ml-6">{category.description}</p>
+          )}
+          
+          <div class="category-content mt-3 ml-6" data-category-content={catIndex}>
+            {category.subcategories && category.subcategories.length > 0 ? (
+              <div class="space-y-3">
+                {category.subcategories.map((subcategory, subIndex) => (
+                  <div>
+                    <button
+                      class="subcategory-toggle flex items-center w-full text-left text-sm font-medium text-[#d4c4a8] hover:text-[#e8dcc8] transition-colors"
+                      data-subcategory={`${catIndex}-${subIndex}`}
+                    >
+                      <span class="mr-2 transition-transform duration-300 subcategory-arrow">▶</span>
+                      {subcategory.name}
+                    </button>
+                    <div class="subcategory-content mt-2 ml-6" data-subcategory-content={`${catIndex}-${subIndex}`}>
+                      <ul class="space-y-2">
+                        {subcategory.tools.map((tool) => (
+                          <li class="flex justify-between items-start text-sm">
+                            <div>
+                              <span class="font-medium text-[#d4c4a8]">{tool.name}</span>
+                              <span class="text-[#a89884]"> — {tool.description}</span>
+                            </div>
+                            <span class="text-xs text-[#7a6a54] ml-2 whitespace-nowrap">{tool.status}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : category.tools && category.tools.length > 0 ? (
+              <ul class="space-y-2">
+                {category.tools.map((tool) => (
+                  <li class="flex justify-between items-start text-sm">
+                    <div>
+                      <span class="font-medium text-[#d4c4a8]">{tool.name}</span>
+                      <span class="text-[#a89884]"> — {tool.description}</span>
+                    </div>
+                    <span class="text-xs text-[#7a6a54] ml-2 whitespace-nowrap">{tool.status}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Main tools section toggle
+  const toolsToggle = document.getElementById('tools-toggle');
+  const toolsContent = document.getElementById('tools-content');
+  const toolsArrow = document.getElementById('tools-arrow');
+  
+  toolsToggle?.addEventListener('click', () => {
+    const isOpen = toolsContent?.classList.contains('open');
+    toolsContent?.classList.toggle('open');
+    if (toolsArrow) {
+      (toolsArrow as HTMLElement).style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
+    }
+  });
+
+  // Category toggles
+  const categoryToggles = document.querySelectorAll('.category-toggle');
+  categoryToggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const catIndex = toggle.getAttribute('data-category');
+      const content = document.querySelector(`[data-category-content="${catIndex}"]`);
+      const arrow = toggle.querySelector('.category-arrow');
+      
+      const isOpen = content?.classList.contains('open');
+      content?.classList.toggle('open');
+      if (arrow) {
+        (arrow as HTMLElement).style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
+      }
+    });
+  });
+
+  // Subcategory toggles
+  const subcategoryToggles = document.querySelectorAll('.subcategory-toggle');
+  subcategoryToggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const subIndex = toggle.getAttribute('data-subcategory');
+      const content = document.querySelector(`[data-subcategory-content="${subIndex}"]`);
+      const arrow = toggle.querySelector('.subcategory-arrow');
+      
+      const isOpen = content?.classList.contains('open');
+      content?.classList.toggle('open');
+      if (arrow) {
+        (arrow as HTMLElement).style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
+      }
+    });
+  });
+</script>

@@ -1,0 +1,60 @@
+---
+import Badge from "../components/Badge.astro";
+import ExternalLink from "../components/ExternalLink.astro";
+import ToolsSection from "../components/ToolsSection.astro";
+import { personalConfig } from "../config";
+import Layout from "../layouts/Layout.astro";
+import { parseDescription } from "../lib/utils";
+---
+
+<Layout>
+  <main class="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+    <h1 class="mb-8 text-2xl font-medium tracking-tighter text-[#d4c4a8]">
+      hey, i'm {personalConfig.name}
+      {personalConfig.emoji}
+    </h1>
+    <p class="prose prose-neutral prose-invert">
+      {
+        parseDescription(personalConfig.description).map(async (part) => {
+          if (typeof part === "string") {
+            return part;
+          }
+          try {
+            const Logo = (await import(`../assets/logos/${part.logo}.astro`))
+              .default;
+            return (
+              <Badge href={part.href}>
+                <Logo />
+                <span class="no-prose">{part.text}</span>
+              </Badge>
+            );
+          } catch (error) {
+            console.error(
+              `Failed to load logo for ${part.text}. File ${`${part.logo}.astro`} not found.\n`,
+              error
+            );
+            return (
+              <Badge href={part.href} noLogo>
+                <span class="no-prose">{part.text}</span>
+              </Badge>
+            );
+          }
+        })
+      }
+    </p>
+
+    <ul
+      class="font-sm mt-8 flex flex-col space-x-0 space-y-2 text-[#a89884] md:flex-row md:space-x-4 md:space-y-0"
+    >
+      {
+        personalConfig.externalLinks.map(({ href, text }) => (
+          <li>
+            <ExternalLink {href}>{text}</ExternalLink>
+          </li>
+        ))
+      }
+    </ul>
+
+    <ToolsSection />
+  </main>
+</Layout>

@@ -1,0 +1,35 @@
+---
+import { siteConfig } from "../config";
+import "../styles/globals.css";
+---
+
+<html lang="en" class="bg-[#1a2332] text-[#d4c4a8]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/Geist.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <title>{siteConfig.title}</title>
+    <meta name="description" content={siteConfig.description} />
+    <meta name="author" content={siteConfig.author} />
+    <meta name="canonical" content={siteConfig.url} />
+    <meta name="og:title" content={siteConfig.title} />
+    <meta name="og:description" content={siteConfig.description} />
+    <meta name="og:url" content={siteConfig.url} />
+    <meta name="og:site_name" content={siteConfig.title} />
+    <meta name="theme-color" content={siteConfig.themeColor} />
+    <meta name="darkreader-lock" />
+  </head>
+
+  <body
+    class="antialiased max-w-2xl mb-40 flex flex-col md:flex-row mx-4 mt-8 lg:mx-auto font-geist"
+  >
+    <slot />
+  </body>
+</html>
