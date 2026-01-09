@@ -5,15 +5,52 @@
 
 // --- SITE METADATA ---
 export const siteMetadata = {
-  name: 'Daniel Mangasarian',
-  title: 'Biologist, researcher, developer.',
-  description: 'Hey, I\'m Daniel, a biology student at UC San Diego with a passion for building tools that solve real problems.',
+  name: 'menooa',
+  title: 'Vehicle Hardware and Dynamics Team Lead',
+  description: 'I currently work as a Vehicle Hardware and Dynamics Team Lead at Cal Sol.',
 };
 
 // --- HERO SECTION ---
 export const heroContent = {
-  headline: 'Biologist Researcher Developer',
-  description: 'Hey, I\'m Daniel! I work at the intersection of biology and technology, creating tools and applications that make research more efficient and intuitive.',
+  greeting: 'hey, i\'m menooa 👋',
+  bio: 'I currently work as a Vehicle Hardware and Dynamics Team Lead at ',
+  badges: [
+    {
+      name: 'Cal Sol',
+      icon: '☀️',
+      url: 'https://calsol.berkeley.edu',
+    },
+    {
+      name: 'Ferrari',
+      icon: '🏎️',
+      url: 'https://www.ferrari.com',
+    },
+    {
+      name: 'University of California, Berkeley',
+      icon: '🔵',
+      url: 'https://www.berkeley.edu',
+    },
+  ],
+  bioMiddle: '. I previously worked at ',
+  bioEnd: ' as a Mechanical Engineering Intern. I\'m currently studying Mechanical Engineering at ',
+  links: [
+    {
+      label: 'linkedin',
+      url: 'https://www.linkedin.com/in/danielmangasarian/',
+    },
+    {
+      label: 'email',
+      url: 'mailto:danielmangasarian@gmail.com',
+    },
+    {
+      label: 'resume',
+      url: '#',
+    },
+    {
+      label: 'portfolio',
+      url: '#',
+    },
+  ],
 };
 
 // --- EXPERIENCES ---
