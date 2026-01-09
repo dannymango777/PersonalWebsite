@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import ExternalIcon from "../assets/External.astro";
+
+type Props = HTMLAttributes<"a">;
+
+const props = Astro.props;
+---
+
+<a
+  {...props}
+  class="flex items-center transition-all text-[#a89884] hover:text-[#d4c4a8]"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  <ExternalIcon />
+  <p class="h-7 ml-2">
+    <slot />
+  </p>
+</a>

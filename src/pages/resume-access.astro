@@ -1,0 +1,138 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { resumeConfig } from "../config";
+---
+
+<Layout>
+  <main class="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+    <div id="access-container" class="max-w-md mx-auto text-center py-12">
+      <h1 class="mb-8 text-2xl font-medium tracking-tighter text-[#d4c4a8]">
+        Resume Access Request
+      </h1>
+      <div id="status-container">
+        <p id="status" class="text-[#a89884] mb-4">{resumeConfig.messages.requesting}</p>
+        <div id="loader" class="text-4xl animate-pulse">⏳</div>
+      </div>
+      <button
+        id="cancel-btn"
+        class="mt-8 px-4 py-2 rounded bg-[#243041] text-[#d4c4a8] hover:bg-[#2a3b52] transition-colors border border-[#2a3b52]"
+      >
+        Cancel
+      </button>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { resumeConfig } from "../config";
+
+  // Generate unique request ID
+  const requestId = `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  const startTime = Date.now();
+  const timeoutMs = resumeConfig.timeoutMinutes * 60 * 1000;
+
+  // Send notification via ntfy.sh
+  async function sendNotification() {
+    try {
+      const response = await fetch(`https://ntfy.sh/${resumeConfig.notificationTopic}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          topic: resumeConfig.notificationTopic,
+          title: 'Resume Access Request',
+          message: `Someone requested access to your resume.\nRequest ID: ${requestId}\nUser Agent: ${navigator.userAgent}`,
+          actions: [
+            {
+              action: 'view',
+              label: 'Approve',
+              url: `https://ntfy.sh/${resumeConfig.notificationTopic}/approve?id=${requestId}`,
+              clear: true
+            },
+            {
+              action: 'view', 
+              label: 'Deny',
+              url: `https://ntfy.sh/${resumeConfig.notificationTopic}/deny?id=${requestId}`,
+              clear: true
+            }
+          ]
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        console.log('Notification sent successfully');
+        startPolling();
+      } else {
+        showError('Failed to send notification');
+      }
+    } catch (error) {
+      console.error('Error sending notification:', error);
+      showError('Connection error');
+    }
+  }
+
+  // Poll for approval
+  // NOTE: This is a demo implementation using localStorage for approval checking.
+  // In a production environment, you would need:
+  // 1. A backend database/KV store to track approval status
+  // 2. Server-side validation before serving the resume
+  // 3. Temporary signed URLs or tokens that expire
+  // 4. A webhook endpoint to receive approval notifications from ntfy.sh
+  // 
+  // For a fully functional implementation, consider:
+  // - Using Vercel KV, Upstash Redis, or similar for state management
+  // - Creating an approval endpoint that the owner can click from notification
+  // - Generating one-time tokens that expire after use or timeout
+  let pollInterval: number;
+  async function startPolling() {
+    // Check for approval via ntfy.sh subscription
+    pollInterval = window.setInterval(async () => {
+      const elapsed = Date.now() - startTime;
+      
+      // Check timeout
+      if (elapsed > timeoutMs) {
+        clearInterval(pollInterval);
+        showMessage(resumeConfig.messages.timeout, '⏱️');
+        return;
+      }
+
+      // Try to check for approval (in real implementation, this would check a backend or KV store)
+      // For now, we'll use localStorage as a simple demo mechanism
+      const approval = localStorage.getItem(`resume-approval-${requestId}`);
+      
+      if (approval === 'approved') {
+        clearInterval(pollInterval);
+        showMessage(resumeConfig.messages.approved, '✅');
+        setTimeout(() => {
+          window.location.href = resumeConfig.pdfPath;
+        }, 1500);
+      } else if (approval === 'denied') {
+        clearInterval(pollInterval);
+        showMessage(resumeConfig.messages.denied, '❌');
+      }
+    }, 2000); // Poll every 2 seconds
+  }
+
+  function showMessage(message: string, emoji: string) {
+    const statusEl = document.getElementById('status');
+    const loaderEl = document.getElementById('loader');
+    
+    if (statusEl) statusEl.textContent = message;
+    if (loaderEl) loaderEl.textContent = emoji;
+  }
+
+  function showError(message: string) {
+    showMessage(`Error: ${message}`, '⚠️');
+    clearInterval(pollInterval);
+  }
+
+  // Cancel button
+  document.getElementById('cancel-btn')?.addEventListener('click', () => {
+    clearInterval(pollInterval);
+    window.location.href = '/';
+  });
+
+  // Start the process
+  sendNotification();
+</script>
