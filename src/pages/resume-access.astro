@@ -73,6 +73,17 @@ import { resumeConfig } from "../config";
   }
 
   // Poll for approval
+  // NOTE: This is a demo implementation using localStorage for approval checking.
+  // In a production environment, you would need:
+  // 1. A backend database/KV store to track approval status
+  // 2. Server-side validation before serving the resume
+  // 3. Temporary signed URLs or tokens that expire
+  // 4. A webhook endpoint to receive approval notifications from ntfy.sh
+  // 
+  // For a fully functional implementation, consider:
+  // - Using Vercel KV, Upstash Redis, or similar for state management
+  // - Creating an approval endpoint that the owner can click from notification
+  // - Generating one-time tokens that expire after use or timeout
   let pollInterval: number;
   async function startPolling() {
     // Check for approval via ntfy.sh subscription

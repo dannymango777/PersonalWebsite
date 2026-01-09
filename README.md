@@ -1,27 +1,30 @@
 # Daniel Mangasarian - Personal Website
 
-A minimalist, professional personal website built with [Next.js](https://nextjs.org/) (App Router) and [Tailwind CSS](https://tailwindcss.com/).
+A minimalist, professional personal website built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
 
 **Live:** [https://danielmangasarian.com](https://danielmangasarian.com)
 
 ## Overview
 
-This website showcases professional experience, education, published papers, articles, and tools/projects. It features a clean, newspaper-inspired design with a warm beige and navy color scheme.
+This website showcases professional experience with inline badge links, external links, and a collapsible tools section. It features a sophisticated navy blue and tan color scheme with smooth animations.
 
 ## Features
 
 - **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
-- **Single Content File** - Update all website text in one place (`lib/content.ts`)
-- **Dark Theme** - Navy background with warm tan typography
-- **Dynamic Tools Section** - Organized by category with collapsible interface
-- **SEO Optimized** - Metadata, semantic HTML, and fast performance
+- **Single Content File** - Update all website text in one place (`src/config.ts`)
+- **Navy & Tan Theme** - Navy blue background (#1a2332) with tan text (#d4c4a8)
+- **Smooth Animations** - Buttery smooth collapsible sections with CSS transitions
+- **Inline Badge Links** - Clickable badges with organization logos
+- **Resume Access Control** - Protected resume with phone notification approval
+- **SEO Optimized** - Metadata, semantic HTML, sitemap generation
+- **Weekly Dependabot Updates** - Automated dependency management
 
 ## Tech Stack
 
-- **Framework:** Next.js 15 (App Router)
-- **Styling:** Tailwind CSS 3
-- **Language:** TypeScript
-- **Hosting:** (Ready for Vercel, Netlify, or any Node.js host)
+- **Framework:** Astro 5.3
+- **Styling:** Tailwind CSS 4
+- **Language:** TypeScript 5.7
+- **Hosting:** Ready for Vercel, Netlify, Cloudflare Pages, or GitHub Pages
 
 ## Quick Start
 
@@ -43,215 +46,177 @@ npm install
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see your site.
+Visit [http://localhost:4321](http://localhost:4321) to see your site.
 
 ### Production Build
 
 ```bash
 npm run build
-npm start
+npm run preview
 ```
 
 ## Customization Guide
 
 ### Update All Website Content
 
-**File:** `lib/content.ts`
+**File:** `src/config.ts`
 
 This single file contains all text on your website. Edit the sections below:
 
-#### Site Metadata
+#### Site Configuration
 ```typescript
-export const siteMetadata = {
-  name: 'Your Name',
-  title: 'Your Headline',
-  description: 'Short description',
+export const siteConfig = {
+  title: "Your Name",
+  description: "Your headline and description",
+  author: "Your Name",
+  url: "https://yourwebsite.com",
+  themeColor: "#1a2332", // navy blue
 };
 ```
 
-#### Hero Section
+#### Personal Configuration
 ```typescript
-export const heroContent = {
-  headline: 'Engineer, researcher, developer.',
-  description: 'Your bio and description...',
-};
-```
-
-#### Work Experience
-```typescript
-export const experiences = [
-  {
-    role: 'Your Role',
-    organization: 'Company Name',
-    period: '2024 - Present',
-  },
-  // Add more roles...
-];
-```
-
-#### Education
-```typescript
-export const education = [
-  {
-    degree: 'Degree Name',
-    institution: 'University',
-    period: '2021 - Present',
-    details: 'GPA, honors, etc.',
-  },
-  // Add more degrees...
-];
-```
-
-#### Published Papers
-```typescript
-export const publishedPapers = [
-  {
-    title: 'Paper Title',
-    authors: 'You, et al.',
-    journal: 'Journal Name',
-    year: '2024',
-    doi: 'https://doi-link',
-  },
-  // Add more papers...
-];
-```
-
-#### Articles
-```typescript
-export const articles = {
-  featured: {
-    title: 'Featured Article Title',
-    description: 'Article description...',
-    date: 'Dec 2025',
-    link: 'https://article-link',
-  },
-  seeAllLink: 'https://blog-url',
-};
-```
-
-#### Resources & Connect
-```typescript
-export const resources = [
-  {
-    icon: '📄',
-    label: 'Resume',
-    href: 'https://resume-link',
-  },
-  {
-    icon: '💼',
-    label: 'LinkedIn',
-    href: 'https://linkedin.com/in/yourprofile',
-  },
-  // Add more links (email, GitHub, portfolio, etc.)
-];
-```
-
-#### Tools / Projects
-```typescript
-export const toolsData = [
-  {
-    name: 'Tool Name',
-    description: 'What it does.',
-    status: 'Planned', // or 'In progress' or 'Live'
-    category: 'Category Name',
-    subcategory: 'Optional Subcategory',
-    href: 'https://tool-link', // Optional - omit if not live
-  },
-  // Add more tools...
-];
-```
-
-#### Footer
-```typescript
-export const footerContent = {
-  copyrightName: 'Your Name',
-  links: [
-    { label: 'LinkedIn', href: 'https://...' },
-    { label: 'GitHub', href: 'https://...' },
-    { label: 'Email', href: 'mailto:your@email.com' },
+export const personalConfig = {
+  name: "yourname",
+  emoji: "👋",
+  // Use [text](url) syntax for inline badge links
+  description: `
+  I currently work as a Role at [Organization](https://org.com/). 
+  I previously worked at [Company](https://company.com/) as a Title.
+  
+  I'm currently studying Subject at [University](https://university.edu/).`,
+  
+  // Bottom links - Easy to reorder/add/remove
+  externalLinks: [
+    { href: "/resume-access", text: "resume" },  // Protected resume
+    { href: "https://linkedin.com/in/yourprofile/", text: "linkedin" },
+    { href: "https://github.com/yourusername", text: "github" },
+    { href: "mailto:your@email.com", text: "email" },
   ],
 };
 ```
 
-### Update Profile Photos
-
-**Profile Photo (Hero Section):**
-- Replace `/public/profile.jpg` with your photo (recommended: 800x1000px)
-
-**Floating Cutout Photo:**
-- Replace `/public/me.png` with a PNG with transparent background (recommended: 400x400px)
-
-**Browser Tab Icon (Favicon):**
-- Edit `/public/favicon.svg` to customize the "DM" initials or add your logo
-
-### Connect Custom Domain
-
-1. **Update `app/layout.tsx` metadata:**
-   ```typescript
-   export const metadata: Metadata = {
-     title: 'Daniel Mangasarian',
-     description: 'Your description',
-     metadataBase: new URL('https://danielmangasarian.com'),
-   };
-   ```
-
-2. **Point Your Domain:**
-   - **Vercel:** Add domain in Vercel Dashboard → Settings → Domains
-   - **Netlify:** Add domain in Site Settings → Domain Management
-   - Update DNS records with your domain registrar
-
-3. **SSL Certificate:** Automatically provided by most hosting platforms
-
-### Customize Colors
-
-Edit `tailwind.config.mjs`:
-
-```javascript
-colors: {
-  background: '#323a43',  // Navy background
-  card: '#ebe7dc',        // Tan card background
-  primary: '#d4cfc0',     // Light tan text
-  secondary: '#a89f94',   // Muted tan text
-}
+#### Tools Section
+```typescript
+export const toolsConfig = {
+  enabled: true,  // Toggle entire section on/off
+  heading: "Tools",
+  description: "Useful web apps and utilities I'm building.",
+  categories: [
+    {
+      name: "Category Name",
+      description: "Category description",
+      subcategories: [
+        {
+          name: "Subcategory Name",
+          tools: [
+            { name: "Tool Name", description: "What it does", status: "Planned" },
+            { name: "Another Tool", description: "What it does", status: "Live" },
+          ]
+        }
+      ]
+    },
+    {
+      name: "Another Category",
+      description: "Description",
+      tools: [
+        { name: "Tool Name", description: "What it does", status: "In Progress" },
+      ]
+    }
+  ]
+};
 ```
 
-### Adjust Typography
+#### Resume Access Control
+```typescript
+export const resumeConfig = {
+  enabled: true,  // Toggle protection on/off
+  pdfPath: "/resume.pdf",
+  notificationTopic: "your-unique-secret-topic-12345",  // ntfy.sh topic
+  timeoutMinutes: 5,
+  messages: {
+    requesting: "Requesting access from owner...",
+    approved: "Access granted! Loading resume...",
+    denied: "Access was denied.",
+    timeout: "Request timed out. Please try again.",
+  }
+};
+```
 
-The site uses a serif "newsreader" font (Georgia/Garamond). To change:
+**Important:** See `RESUME_ACCESS_NOTES.md` for production implementation details.
 
-1. Edit `tailwind.config.mjs` fontFamily
-2. Modify `app/layout.tsx` className
+### Add/Update Logos
+
+Place logo SVG files in `src/assets/logos/` with the organization name (no spaces):
+- `CalSol.astro`
+- `Ferrari.astro`
+- `UniversityofCaliforniaBerkeley.astro`
+
+The logo name should match the text in brackets from your description (spaces and commas removed).
+
+### Update Favicon
+
+Replace `/public/favicon.svg` with your logo or initials.
+
+### Update Font
+
+The site uses the Geist font. To change:
+1. Replace `/public/fonts/Geist.woff2` with your font
+2. Update `src/styles/globals.css` @font-face and theme definitions
 
 ## File Structure
 
 ```
 .
-├── app/
-│   ├── layout.tsx          # Root layout, metadata
-│   ├── page.tsx            # Main page composition
-│   └── globals.css         # Tailwind imports
-├── components/             # React components
-│   ├── Header.tsx
-│   ├── Hero.tsx
-│   ├── FloatingPhoto.tsx
-│   ├── Experiences.tsx
-│   ├── Education.tsx
-│   ├── PublishedPapers.tsx
-│   ├── ArticlesCard.tsx
-│   ├── Resources.tsx
-│   ├── ToolsSection.tsx
-│   └── Footer.tsx
-├── lib/
-│   └── content.ts          # ALL WEBSITE TEXT & DATA
+├── .github/
+│   ├── dependabot.yml          # Weekly npm updates
+│   └── workflows/              # Optional CI/CD
 ├── public/
-│   ├── favicon.svg         # Browser tab icon
-│   ├── profile.jpg         # Hero photo
-│   └── me.png              # Floating cutout
-├── tailwind.config.mjs     # Tailwind configuration
-├── tsconfig.json
-├── next.config.ts
-└── package.json
+│   ├── fonts/Geist.woff2       # Web font
+│   ├── favicon.svg             # Browser icon
+│   └── resume.pdf              # Your resume (if using)
+├── src/
+│   ├── assets/
+│   │   ├── External.astro      # Arrow icon for external links
+│   │   └── logos/              # Organization logos
+│   ├── components/
+│   │   ├── Badge.astro         # Inline clickable badge links
+│   │   ├── ExternalLink.astro  # Bottom links with arrow
+│   │   └── ToolsSection.astro  # Collapsible tools
+│   ├── layouts/
+│   │   └── Layout.astro        # Main HTML layout
+│   ├── lib/
+│   │   └── utils.ts            # parseDescription utility
+│   ├── pages/
+│   │   ├── index.astro         # Main homepage
+│   │   ├── 404.astro           # 404 page
+│   │   ├── resume-access.astro # Resume request page
+│   │   └── api/                # API routes
+│   ├── styles/
+│   │   └── globals.css         # Global styles + Tailwind
+│   └── config.ts               # ALL EDITABLE CONTENT
+├── astro.config.mjs            # Astro configuration
+├── package.json                # Dependencies
+├── tsconfig.json               # TypeScript config
+└── tailwind.config.mjs         # Tailwind config
 ```
+
+## Color Customization
+
+The custom navy and tan color scheme is defined directly in components and layouts:
+
+- **Background:** `#1a2332` (navy blue)
+- **Text:** `#d4c4a8` (tan/cream)
+- **Muted text:** `#a89884` (light brown)
+- **Badge background:** `#243041` (darker navy)
+- **Badge border:** `#2a3b52` (subtle navy)
+
+To change colors, update the Tailwind classes in:
+- `src/layouts/Layout.astro`
+- `src/components/Badge.astro`
+- `src/components/ExternalLink.astro`
+- `src/components/ToolsSection.astro`
+- `src/pages/index.astro`
 
 ## Deployment
 
@@ -262,31 +227,47 @@ npm install -g vercel
 vercel
 ```
 
-Follow the prompts. Your site will be live in seconds with automatic deployments on git push.
+Vercel will auto-detect Astro and configure everything.
 
 ### Netlify
 
-```bash
-npm run build
-```
+1. Connect your GitHub repo
+2. Build command: `npm run build`
+3. Publish directory: `dist`
 
-Connect your GitHub repo for automatic deployment on every push.
+### Cloudflare Pages
 
-### Self-Hosted
+1. Connect your GitHub repo
+2. Build command: `npm run build`
+3. Build output directory: `dist`
 
-```bash
-npm run build
-npm start
-```
+### GitHub Pages
 
-Deploy to any Node.js hosting (AWS, DigitalOcean, Heroku, etc.).
+See Astro documentation for GitHub Pages deployment.
+
+## Resume Access Control
+
+The resume access control system sends notifications to your phone when someone requests access. See `RESUME_ACCESS_NOTES.md` for:
+
+- Production implementation guide
+- Server-side validation setup
+- KV store integration
+- Security recommendations
+- Cost considerations
+
+**Current implementation uses localStorage (demo only) - upgrade to server-side for production use.**
 
 ## Performance
 
-- **Fast Rendering:** Next.js server-side rendering and static generation
-- **Optimized Images:** Next.js Image component with automatic optimization
-- **Minimal CSS:** Only necessary Tailwind classes compiled
-- **SEO Ready:** Metadata, semantic HTML, Open Graph tags
+- **Lightning Fast:** Astro generates static HTML at build time
+- **Zero JS by Default:** Only ships JavaScript when needed
+- **Optimized Images:** Automatic image optimization
+- **SEO Ready:** Metadata, sitemap, semantic HTML
+- **Smooth Animations:** CSS-only transitions (no JS)
+
+## Weekly Maintenance
+
+Dependabot is configured to automatically open PRs for npm dependency updates every week. Review and merge these PRs to keep your site secure and up-to-date.
 
 ## License
 
@@ -294,4 +275,4 @@ Personal website - all rights reserved to Daniel Mangasarian.
 
 ---
 
-**Built with ❤️ using Next.js**
+**Built with ❤️ using Astro**
